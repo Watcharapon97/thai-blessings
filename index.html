@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>ลงนามถวายพระพร</title>
+  <style>
+    body { font-family: sans-serif; background: #f1f8ff; padding: 40px; }
+    .form-box { max-width: 500px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px #ccc; }
+    input, select { width: 100%; padding: 10px; margin: 10px 0; }
+    button { background: royalblue; color: white; padding: 10px; border: none; border-radius: 5px; cursor: pointer; }
+    .success { color: green; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <div class="form-box">
+    <h2>ลงนามถวายพระพร</h2>
+    <form id="blessForm">
+      <label>คำนำหน้า</label>
+      <select name="prefix" required>
+        <option value="">-- เลือก --</option>
+        <option value="นาย">นาย</option>
+        <option value="นาง">นาง</option>
+        <option value="นางสาว">นางสาว</option>
+      </select>
+
+      <label>ชื่อ</label>
+      <input type="text" name="firstName" required>
+
+      <label>นามสกุล</label>
+      <input type="text" name="lastName" required>
+
+      <label>อีเมล (รับเกียรติบัตร)</label>
+      <input type="email" name="email" required>
+
+      <button type="submit">ลงนาม</button>
+    </form>
+    <div class="success" id="resultMsg"></div>
+  </div>
+
+  <script>
+    const scriptURL = "https://script.google.com/macros/s/AKfycbzzEkdr07naT2V4PTEJl4qdoxTkTbhqXpsTQMNfTcrnWA3vFqCphDkuV0FbkkAxjpHntg/exec"; // ← ใส่ลิงก์ Web App ที่ได้
+
+    document.getElementById("blessForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const form = e.target;
+      const formData = new FormData(form);
+
+      fetch(scriptURL, { method: 'POST', body: formData })
+        .then(response => {
+          document.getElementById("resultMsg").innerText = "ส่งข้อมูลเรียบร้อยแล้ว ✅";
+          form.reset();
+        })
+        .catch(error => {
+          document.getElementById("resultMsg").innerText = "เกิดข้อผิดพลาด กรุณาลองใหม่";
+          console.error("Error!", error.message);
+        });
+    });
+  </script>
+</body>
+</html>
